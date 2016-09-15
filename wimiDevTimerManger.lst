@@ -1,0 +1,89 @@
+C51 COMPILER V9.00   WIMIDEVTIMERMANGER                                                    05/27/2016 15:36:41 PAGE 1   
+
+
+C51 COMPILER V9.00, COMPILATION OF MODULE WIMIDEVTIMERMANGER
+OBJECT MODULE PLACED IN wimiDevTimerManger.obj
+COMPILER INVOKED BY: I:\program\keil\C51\BIN\C51.EXE code\wimiDevTimerManger.c BROWSE DEBUG OBJECTEXTEND PRINT(.\wimiDev
+                    -TimerManger.lst) OBJECT(wimiDevTimerManger.obj)
+
+line level    source
+
+   1          #include"wimiDevTimerManger.h"
+   2          
+   3          TIMERMANGER _timerManger;
+   4           void TimerMangerInit()
+   5           {      
+   6   1              unsigned char index=0;
+   7   1              _timerManger._size=0;
+   8   1              _timerManger._count=0;
+   9   1              _timerManger._maxcount=0;
+  10   1              for(index=0;index<_TIMERPOOL_MAXSIZE;++index)
+  11   1              {
+  12   2                      _timerManger._TIMERPOOL[index]._time=0;
+  13   2                      _timerManger._TIMERPOOL[index]._timeNow=0;
+  14   2                      _timerManger._TIMERPOOL[index]._enable=0;
+  15   2                  _timerManger._TIMERPOOL[index]._islive=0;
+  16   2                  _timerManger._TIMERPOOL[index]._callback=0;
+  17   2              }
+  18   1       }
+  19           void AddCount()
+  20           {
+  21   1              _timerManger._count++;
+  22   1       }
+  23           void ClockDistributer()
+  24           {
+  25   1               if(_timerManger._count>=_timerManger._maxcount)
+  26   1               {
+  27   2                      _timerManger._count=0;
+  28   2                      TimerEventDistributer();
+  29   2               }
+  30   1       }
+  31          void TimerEventDistributer()
+  32          {
+  33   1              unsigned char index=0;
+  34   1                                      
+  35   1              for(index=0;index<_timerManger._size;++index)
+  36   1              {  
+  37   2                      if(_timerManger._TIMERPOOL[index]._enable==1)
+  38   2                      {
+  39   3                       _timerManger._TIMERPOOL[index]._timeNow++;
+  40   3                       if( _timerManger._TIMERPOOL[index]._timeNow >=
+  41   3                               _timerManger._TIMERPOOL[index]._time
+  42   3                              )
+  43   3                              {
+  44   4                                      _timerManger._TIMERPOOL[index]._timeNow=0;      
+  45   4                                      _timerManger._TIMERPOOL[index]._callback();
+  46   4                              }
+  47   3                  }
+  48   2              }
+  49   1      }
+  50          
+  51           TIMER* CreateTimer(unsigned int time,TimerCallBack callback,TIMER* timerout)
+  52           {      
+  53   1              timerout=&_timerManger._TIMERPOOL[_timerManger._size];
+  54   1              if(_timerManger._size<_TIMERPOOL_MAXSIZE)
+C51 COMPILER V9.00   WIMIDEVTIMERMANGER                                                    05/27/2016 15:36:41 PAGE 2   
+
+  55   1              {
+  56   2                      _timerManger._size+=1;
+  57   2              }
+  58   1              timerout->_time=time;
+  59   1              timerout->_islive=1;
+  60   1              timerout->_enable=1;
+  61   1              timerout->_callback= callback;
+  62   1              return &timerout;       
+  63   1       }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    313    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     32       9
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

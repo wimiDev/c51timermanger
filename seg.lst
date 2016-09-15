@@ -1,0 +1,53 @@
+C51 COMPILER V9.00   SEG                                                                   05/27/2016 15:36:44 PAGE 1   
+
+
+C51 COMPILER V9.00, COMPILATION OF MODULE SEG
+OBJECT MODULE PLACED IN seg.obj
+COMPILER INVOKED BY: I:\program\keil\C51\BIN\C51.EXE code\seg.c BROWSE DEBUG OBJECTEXTEND PRINT(.\seg.lst) OBJECT(seg.ob
+                    -j)
+
+line level    source
+
+   1          #include"seg.h"
+   2          
+   3          unsigned char code dula[16]={0x28,0xEE,0x32,0xA2,0xE4,0xA1,0x21,
+   4                                          0xEA,0x20,0xA0,0x60,0x25,0x39,0x26,0x31,0x71};
+   5          unsigned char code wela[4]={0x70,0xb0,0xd0,0xe0};
+   6          
+   7          unsigned char _displaybuff[4]={1,2,3,4};
+   8          unsigned char _weindex=0;
+   9          char _keyval=0;
+  10          
+  11          void seginit()
+  12          {
+  13   1              _weindex=0;
+  14   1               WE=wela[0];
+  15   1               DU=dula[0];
+  16   1               CreateTimer(5,segCallback,&segTimer);
+  17   1      }
+  18          
+  19          void SegDisply(char displaybuff[4])
+  20          {       
+  21   1           DU=0xff;
+  22   1               _weindex=++_weindex%4;
+  23   1               WE=0xf0&wela[_weindex];
+  24   1               DU=dula[displaybuff[_weindex]];
+  25   1               _displaybuff[0]=_moduleselect;
+  26   1              _displaybuff[1]=_parameter[_moduleselect]/100;
+  27   1              _displaybuff[2]=(_parameter[_moduleselect]%100)/10;
+  28   1              _displaybuff[3]=(_parameter[_moduleselect])%10;
+  29   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    160    ----
+   CONSTANT SIZE    =     20    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      6    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

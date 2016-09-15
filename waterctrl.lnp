@@ -1,0 +1,11 @@
+"main.obj",
+"wimiDevTimerManger.obj",
+"wimiDevTimerStruct.obj",
+"global.obj",
+"seg.obj",
+"waterctrl.obj",
+"keyscan.obj",
+"AdDa.obj",
+"pidctrl.obj" 
+TO "waterctrl" 
+RAMSIZE(256) 
